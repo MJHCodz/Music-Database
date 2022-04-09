@@ -1,0 +1,10 @@
+SELECT g.name AS Gen_Name, 
+	round(sum(il.UnitPrice*il.Quantity)) AS total_usd
+FROM track t
+JOIN genre g
+ON g.genreid = t.GenreId
+JOIN InvoiceLine il
+ON il.trackid = t.TrackId
+GROUP BY 1
+Order BY 2 DESC
+LIMIT 10;
