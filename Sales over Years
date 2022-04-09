@@ -1,0 +1,32 @@
+WITH top AS (
+SELECT ar.name as Artist_Name, sum(il.UnitPrice*il.Quantity) AS total_usd
+FROM track t
+JOIN genre g
+ON g.genreid = t.GenreId
+JOIN InvoiceLine il
+ON il.trackid = t.TrackId
+JOIN album al
+ON al.AlbumId = t.AlbumId
+JOIN Artist ar
+ON ar.ArtistId = al.ArtistId
+WHERE g.name = "Rock"
+GROUP BY 1
+Order BY total_usd DESC
+LIMIT 3)
+SELECT strftime('%Y',i.invoicedate) AS Year, ar.name, sum(il.Quantity*il.UnitPrice) AS sale_amt
+FROM invoice i
+JOIN InvoiceLine il
+ON i.invoiceid = il.InvoiceId
+JOIN track t
+ON t.trackid = il.TrackId
+JOIN genre g
+ON g.genreid = t.GenreId
+JOIN album al
+ON al.albumid = t.AlbumId
+JOIN Artist ar
+ON ar.artistid = al.ArtistId
+JOIN top
+ON top.artist_name = ar.name
+WHERE g.name = "Rock"
+GROUP BY 1, 2
+ORDER BY 1,3 DESC
