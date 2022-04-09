@@ -1,0 +1,11 @@
+SELECT BillingCountry AS Country, sum(il.UnitPrice*il.Quantity) AS sales_amt
+FROM Track t
+JOIN InvoiceLine il
+ON il.trackid = t.TrackId
+JOIN Genre g
+ON g.GenreId = t.GenreId
+JOIN invoice i
+ON i.InvoiceId = il.InvoiceId
+WHERE g.name = "Rock"
+GROUP BY 1
+ORDER BY 2 DESC;
