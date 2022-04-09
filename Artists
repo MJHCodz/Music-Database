@@ -1,0 +1,15 @@
+SELECT ar.name AS artist_name, 
+	sum(il.quantity) AS sales_vol, 
+	round(sum(il.UnitPrice*il.Quantity)) AS sales_amt
+FROM Track t
+JOIN InvoiceLine il
+ON il.trackid = t.TrackId
+JOIN Album al
+ON al.AlbumId = t.AlbumId
+JOIN Artist ar
+ON ar.ArtistId = al.ArtistId
+JOIN Genre g
+ON g.GenreId = t.GenreId
+WHERE g.name = "Rock"
+GROUP BY 1
+ORDER BY 3 DESC;
